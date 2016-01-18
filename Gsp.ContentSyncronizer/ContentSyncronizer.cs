@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
@@ -12,8 +13,11 @@ using System.Xml;
 
 namespace Gsp.ContentSyncronizer
 {
+    
     public partial class ContentSyncronizer : ServiceBase
     {
+        private bool KeepRunning = true;
+
         public ContentSyncronizer()
         {
             InitializeComponent();
@@ -21,19 +25,55 @@ namespace Gsp.ContentSyncronizer
 
         protected override void OnStart(string[] args)
         {
+            StartService();
         }
 
         protected override void OnStop()
         {
+            StopService();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+        public void StartService()
         {
-            ShowMessageBox("TEST");
+            LoadSettings();
+
+            var success = LoadPlugin();
+
+            if (success) return;
+
+            StartWatchingProcess();
+
+            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e) {
+                e.Cancel = true;
+                KeepRunning = false;
+            };
+
+            while (KeepRunning) { }
+            Console.WriteLine("exited gracefully");
         }
-         public void LoadSettings()
+        public void StartWatchingProcess()
         {
+            Tools.Watch("Local.txt", (oldContent,newContent) => {
+
+                Tools.ShowMessageBox($"Old: {oldContent} \n\nNew: {newContent}");
+            });
+            Console.ReadLine();
+        }
+        public void StopService()
+        {
+
+        }
+        public bool LoadPlugin()
+        {
+            return false;
+        }
+        public void LoadSettings()
+        {
+            if (!File.Exists("settings.xml")) return;
+
             var reader = new XmlTextReader("settings.xml");
+
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -55,9 +95,12 @@ namespace Gsp.ContentSyncronizer
                 }
             }
         }
-       public void ShowMessageBox(string message)
+
+
+
+        private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(message);
+            Tools.ShowMessageBox("TEST");
         }
     }
 }

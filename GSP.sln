@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gsp.ContentSyncronizer", "Gsp.ContentSyncronizer\Gsp.ContentSyncronizer.csproj", "{5E3ECBD7-EAF1-426D-A313-963A02E32402}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentSyncronizer", "Gsp.ContentSyncronizer\ContentSyncronizer.csproj", "{5E3ECBD7-EAF1-426D-A313-963A02E32402}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

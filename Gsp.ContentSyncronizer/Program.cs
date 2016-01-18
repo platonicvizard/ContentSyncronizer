@@ -12,7 +12,8 @@ namespace Gsp.ContentSyncronizer
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static void Main()
+        [STAThread]
+        static void Main(string [] args)
         {
 
 #if (!DEBUG)
@@ -24,10 +25,7 @@ namespace Gsp.ContentSyncronizer
             ServiceBase.Run(ServicesToRun);
 #else
             ContentSyncronizer myServ = new ContentSyncronizer();
-            myServ.ShowMessageBox("Testing 123");
-            // here Process is my Service function
-            // that will run when my service onstart is call
-            // you need to call your own method or function name here instead of Process();
+            myServ.StartService();
 #endif
         }
     }
